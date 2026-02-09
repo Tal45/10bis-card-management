@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  /* Carbon Dark Palette - Precise Hex Codes */
+  --color-carbon-gray-100: #161616; /* Background */
+  --color-carbon-gray-90: #262626;  /* Layer 1 */
+  --color-carbon-gray-80: #393939;  /* Layer 2 / Borders */
+  --color-carbon-gray-70: #525252;  /* Field */
+  --color-carbon-blue-60: #0f62fe;  /* Primary Action */
+  --color-carbon-blue-70: #0043ce;  /* Hover Action */
+  --color-carbon-text-primary: #f4f4f4;
+  --color-carbon-text-secondary: #c6c6c6;
+  --color-carbon-text-helper: #a8a8a8;
+  --color-carbon-text-inverse: #161616;
+}
+
+/* Base styles for the entire site */
+:root {
+  background-color: #161616;
+  color: #f4f4f4;
+}
+
+html, body {
+  @apply bg-carbon-gray-100 text-carbon-text-primary font-sans m-0 p-0;
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+  direction: ltr;
+}
+
+#root {
+  @apply bg-carbon-gray-100 min-h-screen;
+}
+
+/* Carbon Component Styles */
+.carbon-card {
+  @apply bg-carbon-gray-90 border border-carbon-gray-80 p-4 transition-colors;
+}
+
+.carbon-button-primary {
+  @apply bg-carbon-blue-60 text-white px-4 py-3 flex items-center justify-between hover:bg-carbon-blue-70 transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.carbon-input {
+  @apply w-full bg-carbon-gray-80 border-b border-carbon-gray-70 p-3 text-carbon-text-primary focus:outline-none focus:border-carbon-blue-60 transition-colors placeholder:text-carbon-text-helper;
+}
+
+.carbon-label {
+  @apply block text-xs font-medium text-carbon-text-secondary mb-2;
+}
+
+/* Force dark appearance for native inputs */
+input, select, textarea {
+  color-scheme: dark;
+}
+
+/* Override any default browser focus rings to keep it Carbon */
+*:focus-visible {
+  outline: 2px solid #0f62fe;
+  outline-offset: -2px;
+}
