@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Search, Settings as SettingsIcon, Archive } from 'lucide-react';
+import { Plus, Search, Settings as SettingsIcon, Archive, ExternalLink } from 'lucide-react';
 import { cardService } from '../../features/cards/cardService';
 import type { Card } from '../../db/schema';
 import { formatDistanceToNow, isPast } from 'date-fns';
@@ -35,6 +35,15 @@ export default function Home() {
       <header className="flex items-center justify-between py-4 border-b border-carbon-gray-80 mb-6">
         <h1 className="text-xl font-medium tracking-tight">My Cards</h1>
         <div className="flex gap-1">
+          <a 
+            href="https://multipass.co.il/GetBalance" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="p-3 text-carbon-text-secondary hover:bg-carbon-gray-90 transition-colors"
+            title="Check Balance"
+          >
+            <ExternalLink size={20} />
+          </a>
           <Link to="/settings" className="p-3 text-carbon-text-secondary hover:bg-carbon-gray-90 transition-colors">
             <SettingsIcon size={20} />
           </Link>

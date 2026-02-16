@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ChevronLeft, Copy, Trash2, Archive, RotateCcw, Edit2, Check } from 'lucide-react';
+import { ChevronLeft, Copy, Trash2, Archive, RotateCcw, Edit2, Check, ExternalLink } from 'lucide-react';
 import JsBarcode from 'jsbarcode';
 import { QRCodeSVG } from 'qrcode.react';
 import { cardService } from '../../features/cards/cardService';
@@ -123,7 +123,7 @@ export default function CardDetail() {
           </div>
         </div>
 
-        <div className="flex items-center justify-center border-y border-carbon-gray-80 py-6">
+        <div className="flex flex-col items-center gap-6 border-y border-carbon-gray-80 py-6">
           {isEditingAmount ? (
             <div className="flex items-center gap-3">
               <input
@@ -147,6 +147,16 @@ export default function CardDetail() {
               <Edit2 size={16} className="text-carbon-text-helper opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
           )}
+
+          <a 
+            href="https://multipass.co.il/GetBalance" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="carbon-button-primary w-full max-w-xs text-sm py-2"
+          >
+            <span>Check Balance</span>
+            <ExternalLink size={16} />
+          </a>
         </div>
 
         <div className="space-y-4">
