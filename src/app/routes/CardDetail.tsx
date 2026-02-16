@@ -15,6 +15,7 @@ export default function CardDetail() {
   const [showCode, setShowCode] = useState(true);
   const [isEditingAmount, setIsEditingAmount] = useState(false);
   const [newAmount, setNewAmount] = useState('');
+  const [copied, setCopied] = useState(false);
   const barcodeRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
@@ -55,6 +56,8 @@ export default function CardDetail() {
   const handleCopy = () => {
     if (card) {
       navigator.clipboard.writeText(card.number);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     }
   };
 
@@ -162,7 +165,7 @@ export default function CardDetail() {
         <div className="space-y-4">
           <div className="bg-carbon-gray-100 p-6 border border-carbon-gray-80 relative group overflow-hidden">
              <div className="absolute top-0 right-0 p-1 bg-carbon-gray-80 text-[8px] text-carbon-text-helper uppercase font-bold tracking-widest">
-                Card Number
+                {copied ? <span className="text-carbon-blue-60">Copied!</span> : 'Card Number'}
              </div>
             <div className={`font-mono text-xl tracking-[0.25em] font-bold mt-2 ${!showCode && 'blur-md select-none'}`}>
               {card.number}
@@ -171,7 +174,7 @@ export default function CardDetail() {
               onClick={handleCopy}
               className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-carbon-text-helper hover:text-carbon-blue-60 transition-colors"
             >
-              <Copy size={20} />
+              {copied ? <Check size={20} className="text-carbon-blue-60" /> : <Copy size={20} />}
             </button>
           </div>
           <button 
