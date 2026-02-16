@@ -57,13 +57,23 @@ export default function CardDetail() {
     if (card) {
       const cleanNumber = card.number.replace(/\s/g, '');
       
-      // Try navigator.clipboard first
-      if (navigator.clipboard && window.isSecureContext) {
+      // Try the modern ClipboardItem API first (allows explicit MIME type)
+      if (typeof ClipboardItem !== "undefined" && navigator.clipboard && window.isSecureContext) {
+        const type = "text/plain";
+        const blob = new Blob([cleanNumber], { type });
+        const data = [new ClipboardItem({ [type]: blob })];
+        
+        navigator.clipboard.write(data).then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        }).catch(() => {
+          copyFallback(cleanNumber);
+        });
+      } else if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(cleanNumber).then(() => {
           setCopied(true);
           setTimeout(() => setCopied(false), 2000);
         }).catch(() => {
-          // Fallback if clipboard API fails
           copyFallback(cleanNumber);
         });
       } else {
