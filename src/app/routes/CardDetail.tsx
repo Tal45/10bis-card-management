@@ -55,10 +55,41 @@ export default function CardDetail() {
 
   const handleCopy = () => {
     if (card) {
-      navigator.clipboard.writeText(card.number.trim());
+      const cleanNumber = card.number.replace(/\s/g, '');
+      
+      // Try navigator.clipboard first
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(cleanNumber).then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        }).catch(() => {
+          // Fallback if clipboard API fails
+          copyFallback(cleanNumber);
+        });
+      } else {
+        copyFallback(cleanNumber);
+      }
+    }
+  };
+
+  const copyFallback = (text: string) => {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    // Ensure it's not visible and doesn't scroll the page
+    textArea.style.position = "fixed";
+    textArea.style.left = "-9999px";
+    textArea.style.top = "0";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand('copy');
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Fallback copy failed', err);
     }
+    document.body.removeChild(textArea);
   };
 
   const handleUpdateAmount = async () => {
