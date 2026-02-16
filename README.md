@@ -1,4 +1,4 @@
-# Gift Card Wallet (TENBIZ)
+# Gift Card Wallet
 
 A Progressive Web App (PWA) to store and manage your gift cards offline. Optimized for mobile use with barcode and QR code generation.
 
