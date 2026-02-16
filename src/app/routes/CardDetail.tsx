@@ -55,7 +55,7 @@ export default function CardDetail() {
 
   const handleCopy = () => {
     if (card) {
-      navigator.clipboard.writeText(card.number);
+      navigator.clipboard.writeText(card.number.trim());
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }

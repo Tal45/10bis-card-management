@@ -39,6 +39,7 @@ export default function AddCard() {
     try {
       await cardService.createCard({
         ...data,
+        number: data.number.trim(),
         nickname: data.nickname || '',
         amountMinor: Math.round(data.amount * 100),
       });
