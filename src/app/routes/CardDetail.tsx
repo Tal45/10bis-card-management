@@ -192,15 +192,24 @@ export default function CardDetail() {
             </div>
           )}
 
-          <a 
-            href="https://multipass.co.il/GetBalance" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="carbon-button-primary w-full max-w-xs text-sm py-2"
-          >
-            <span>Check Balance</span>
-            <ExternalLink size={16} />
-          </a>
+          <div className="flex gap-2 w-full max-w-xs">
+            <a 
+              href="https://multipass.co.il/GetBalance" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="carbon-button-primary flex-1 text-sm py-2"
+            >
+              <span>Check Balance</span>
+              <ExternalLink size={16} />
+            </a>
+            <button 
+              onClick={() => setIsEditingAmount(true)}
+              className="bg-carbon-gray-80 text-carbon-text-primary hover:bg-carbon-gray-70 border border-carbon-gray-70 transition-colors flex items-center justify-center gap-2 flex-1 text-sm py-2"
+            >
+              <span>Update Balance</span>
+              <Edit2 size={16} />
+            </button>
+          </div>
         </div>
 
         <div className="space-y-4">

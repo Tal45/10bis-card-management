@@ -20,6 +20,14 @@ type FormData = z.infer<typeof schema>;
 
 export default function AddCard() {
   const navigate = useNavigate();
+  
+  // Calculate default expiration date (5 years from now)
+  const defaultExpDate = (() => {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() + 5);
+    return date.toISOString().split('T')[0];
+  })();
+
   const { register, handleSubmit, watch, setValue, formState: { errors, isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -28,7 +36,7 @@ export default function AddCard() {
       number: '',
       currency: 'ILS',
       amount: 0,
-      expirationDate: '',
+      expirationDate: defaultExpDate,
       notes: '',
     }
   });
