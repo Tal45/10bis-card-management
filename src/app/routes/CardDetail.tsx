@@ -12,7 +12,7 @@ export default function CardDetail() {
   const navigate = useNavigate();
   const [card, setCard] = useState<Card | null>(null);
   const [loading, setLoading] = useState(true);
-  const [showCode, setShowCode] = useState(true);
+  const [showCode, setShowCode] = useState(false);
   const [isEditingAmount, setIsEditingAmount] = useState(false);
   const [newAmount, setNewAmount] = useState('');
   const [copied, setCopied] = useState(false);
@@ -193,22 +193,22 @@ export default function CardDetail() {
             </div>
           )}
 
-          <div className="flex gap-2 w-full max-w-xs">
+          <div className="flex flex-col gap-3 w-full max-w-xs">
             <a 
               href="https://multipass.co.il/GetBalance" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="carbon-button-primary flex-1 text-sm py-2"
+              className="carbon-button-primary w-full py-3 flex items-center !justify-center gap-2 shadow-sm"
             >
-              <span>Check Balance</span>
-              <ExternalLink size={16} />
+              <span className="font-semibold">Check Balance</span>
+              <ExternalLink size={18} />
             </a>
             <button 
               onClick={() => setIsEditingAmount(true)}
-              className="bg-carbon-gray-80 text-carbon-text-primary hover:bg-carbon-gray-70 border border-carbon-gray-70 transition-colors flex items-center justify-center gap-2 flex-1 text-sm py-2"
+              className="w-full py-3 bg-carbon-gray-80 text-carbon-text-primary hover:bg-carbon-gray-70 border border-carbon-gray-70 transition-all flex items-center justify-center gap-2 font-medium"
             >
               <span>Update Balance</span>
-              <Edit2 size={16} />
+              <Edit2 size={18} />
             </button>
           </div>
         </div>
