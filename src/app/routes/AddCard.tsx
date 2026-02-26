@@ -124,6 +124,7 @@ export default function AddCard() {
                 type="number"
                 step="0.01"
                 {...register('amount', { valueAsNumber: true })}
+                onFocus={(e) => e.target.select()}
                 className="carbon-input"
                 inputMode="decimal"
               />

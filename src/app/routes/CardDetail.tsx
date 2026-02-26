@@ -175,6 +175,7 @@ export default function CardDetail() {
                 step="0.01"
                 value={newAmount}
                 onChange={(e) => setNewAmount(e.target.value)}
+                onFocus={(e) => e.target.select()}
                 className="w-28 text-3xl font-bold bg-carbon-gray-100 border-b border-carbon-blue-60 text-center focus:outline-none"
                 autoFocus
                 inputMode="decimal"
