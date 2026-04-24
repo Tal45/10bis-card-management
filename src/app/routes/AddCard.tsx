@@ -24,10 +24,10 @@ export default function AddCard() {
   const navigate = useNavigate();
   const [isScanning, setIsScanning] = useState(false);
   
-  // Calculate default expiration date (5 years from now)
+  // Calculate default expiration date (2 years from now)
   const defaultExpDate = (() => {
     const date = new Date();
-    date.setFullYear(date.getFullYear() + 5);
+    date.setFullYear(date.getFullYear() + 2);
     return date.toISOString().split('T')[0];
   })();
 
