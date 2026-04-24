@@ -111,7 +111,7 @@ export default function AddCard() {
             <input
               {...register('number')}
               placeholder="Enter card digits"
-              className="carbon-input font-mono tracking-widest"
+              className="carbon-input font-mono tracking-wider"
               inputMode="numeric"
             />
             {errors.number && <p className="text-red-400 text-xs mt-1">{errors.number.message}</p>}

@@ -128,7 +128,7 @@ function CardItem({ card, onUpdate }: { card: Card, onUpdate: () => void }) {
         
         <div className="flex justify-between items-end mt-1">
           <div className="space-y-0.5">
-            <p className="text-xs font-mono text-carbon-text-helper tracking-wider">
+            <p className="text-xs font-mono text-carbon-text-helper tracking-wider break-all">
               {card.number.slice(-4).padStart(card.number.length, '*')}
             </p>
             <p className={`text-[10px] ${isExpired ? 'text-red-400' : 'text-carbon-text-helper'}`}>

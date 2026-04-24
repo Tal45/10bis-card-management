@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ChevronLeft, Copy, Trash2, Archive, RotateCcw, Edit2, Check, ExternalLink } from 'lucide-react';
+import { ChevronLeft, Copy, Trash2, Archive, RotateCcw, Edit2, Check } from 'lucide-react';
 import JsBarcode from 'jsbarcode';
 import { QRCodeSVG } from 'qrcode.react';
 import { cardService } from '../../features/cards/cardService';
@@ -194,15 +194,6 @@ export default function CardDetail() {
           )}
 
           <div className="flex flex-col gap-3 w-full max-w-xs">
-            <a 
-              href="https://multipass.co.il/GetBalance" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="carbon-button-primary w-full py-3 flex items-center !justify-center gap-2 shadow-sm"
-            >
-              <span className="font-semibold">Check Balance</span>
-              <ExternalLink size={18} />
-            </a>
             <button 
               onClick={() => setIsEditingAmount(true)}
               className="w-full py-3 bg-carbon-gray-80 text-carbon-text-primary hover:bg-carbon-gray-70 border border-carbon-gray-70 transition-all flex items-center justify-center gap-2 font-medium"
@@ -218,7 +209,7 @@ export default function CardDetail() {
              <div className="absolute top-0 right-0 p-1 bg-carbon-gray-80 text-[8px] text-carbon-text-helper uppercase font-bold tracking-widest">
                 {copied ? <span className="text-carbon-blue-60">Copied!</span> : 'Card Number'}
              </div>
-            <div className={`font-mono text-xl tracking-[0.25em] font-bold mt-2 ${!showCode && 'blur-md select-none'}`}>
+            <div className={`font-mono font-bold mt-2 break-all ${card.number.length > 16 ? 'text-base tracking-wider' : 'text-xl tracking-[0.25em]'} ${!showCode && 'blur-md select-none'}`}>
               {card.number}
             </div>
             <button 
