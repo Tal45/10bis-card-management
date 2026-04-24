@@ -1,10 +1,12 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { ChevronLeft, Save } from 'lucide-react';
+import { ChevronLeft, Save, Scan, X } from 'lucide-react';
 import { cardService } from '../../features/cards/cardService';
 import { STORES } from '../../utils/stores';
+import BarcodeScanner from '../../components/BarcodeScanner';
 
 const schema = z.object({
   storeId: z.string().min(1, 'Store is required'),
@@ -20,6 +22,7 @@ type FormData = z.infer<typeof schema>;
 
 export default function AddCard() {
   const navigate = useNavigate();
+  const [isScanning, setIsScanning] = useState(false);
   
   // Calculate default expiration date (5 years from now)
   const defaultExpDate = (() => {
@@ -55,6 +58,16 @@ export default function AddCard() {
     } catch (err) {
       console.error(err);
       alert('Error saving card');
+    }
+  };
+
+  const handleScanSuccess = (scannedText: string) => {
+    setValue('number', scannedText);
+    setIsScanning(false);
+    
+    // Provide haptic feedback if available
+    if (navigator.vibrate) {
+      navigator.vibrate(200);
     }
   };
 
@@ -108,12 +121,22 @@ export default function AddCard() {
 
           <div>
             <label className="carbon-label">Card Number</label>
-            <input
-              {...register('number')}
-              placeholder="Enter card digits"
-              className="carbon-input font-mono tracking-wider"
-              inputMode="numeric"
-            />
+            <div className="relative">
+              <input
+                {...register('number')}
+                placeholder="Enter card digits"
+                className="carbon-input font-mono tracking-wider pr-12"
+                inputMode="numeric"
+              />
+              <button
+                type="button"
+                onClick={() => setIsScanning(true)}
+                className="absolute right-0 top-0 bottom-0 px-3 text-carbon-blue-60 hover:bg-carbon-gray-70 transition-colors"
+                title="Scan Barcode"
+              >
+                <Scan size={20} />
+              </button>
+            </div>
             {errors.number && <p className="text-red-400 text-xs mt-1">{errors.number.message}</p>}
           </div>
 
@@ -172,6 +195,28 @@ export default function AddCard() {
           <Save size={20} />
         </button>
       </form>
+
+      {/* Scanner Modal Overlay */}
+      {isScanning && (
+        <div className="fixed inset-0 z-50 bg-black flex flex-col">
+          <header className="flex items-center justify-between p-4 bg-carbon-gray-100 border-b border-carbon-gray-80">
+            <h2 className="text-sm font-bold uppercase tracking-widest">Scan Barcode</h2>
+            <button 
+              onClick={() => setIsScanning(false)}
+              className="p-2 text-carbon-text-secondary hover:text-white"
+            >
+              <X size={24} />
+            </button>
+          </header>
+          <div className="flex-1 relative">
+            <BarcodeScanner 
+              onScanSuccess={handleScanSuccess}
+              onScanFailure={(err) => console.log('Scanning...', err)}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
