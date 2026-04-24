@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, Copy, Trash2, Archive, RotateCcw, Edit2, Check } from 'lucide-react';
 import JsBarcode from 'jsbarcode';
@@ -18,11 +18,37 @@ export default function CardDetail() {
   const [copied, setCopied] = useState(false);
   const barcodeRef = useRef<SVGSVGElement>(null);
 
-  useEffect(() => {
-    if (id) {
-      loadCard(id);
+  const loadCard = useCallback(async (cardId: string) => {
+    const data = await cardService.getCardById(cardId);
+    if (data) {
+      setCard(data);
+      setNewAmount((data.amountMinor / 100).toString());
+    } else {
+      navigate('/');
     }
-  }, [id]);
+  }, [navigate]);
+
+  useEffect(() => {
+    if (!id) return;
+    
+    let ignore = false;
+    const load = async () => {
+      setLoading(true);
+      const data = await cardService.getCardById(id);
+      if (!ignore) {
+        if (data) {
+          setCard(data);
+          setNewAmount((data.amountMinor / 100).toString());
+        } else {
+          navigate('/');
+        }
+        setLoading(false);
+      }
+    };
+
+    load();
+    return () => { ignore = true; };
+  }, [id, navigate]);
 
   useEffect(() => {
     if (card && barcodeRef.current) {
@@ -41,17 +67,6 @@ export default function CardDetail() {
       }
     }
   }, [card, showCode]);
-
-  const loadCard = async (cardId: string) => {
-    const data = await cardService.getCardById(cardId);
-    if (data) {
-      setCard(data);
-      setNewAmount((data.amountMinor / 100).toString());
-    } else {
-      navigate('/');
-    }
-    setLoading(false);
-  };
 
   const handleCopy = () => {
     if (card) {

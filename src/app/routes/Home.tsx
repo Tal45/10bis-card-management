@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Search, Settings as SettingsIcon, Archive, ExternalLink } from 'lucide-react';
 import { cardService } from '../../features/cards/cardService';
@@ -13,15 +13,25 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadCards();
+    let ignore = false;
+    
+    const load = async () => {
+      setLoading(true);
+      const all = await (showArchived ? cardService.getAllCards(true) : cardService.getActiveCards());
+      if (!ignore) {
+        setCards(all);
+        setLoading(false);
+      }
+    };
+
+    load();
+    return () => { ignore = true; };
   }, [showArchived]);
 
-  const loadCards = async () => {
-    setLoading(true);
+  const loadCards = useCallback(async () => {
     const all = await (showArchived ? cardService.getAllCards(true) : cardService.getActiveCards());
     setCards(all);
-    setLoading(false);
-  };
+  }, [showArchived]);
 
   const filteredCards = cards.filter(c => {
     const store = getStoreById(c.storeId);
