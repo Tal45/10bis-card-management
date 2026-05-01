@@ -23,6 +23,15 @@ export const cardService = {
   },
 
   async createCard(cardData: Omit<Card, 'id' | 'createdAt' | 'updatedAt' | 'archivedAt' | 'lastUsedAt' | 'isEmpty'>) {
+    // Check for duplicates (same number and store, not archived)
+    const existing = await db.cards
+      .filter(c => c.number === cardData.number.trim() && c.storeId === cardData.storeId && !c.archivedAt)
+      .first();
+
+    if (existing) {
+      throw new Error('DUPLICATE_CARD');
+    }
+
     const now = new Date().toISOString();
     const id = uuidv4();
     const card: Card = {

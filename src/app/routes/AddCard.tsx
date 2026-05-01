@@ -55,9 +55,13 @@ export default function AddCard() {
         amountMinor: Math.round(data.amount * 100),
       });
       navigate('/');
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      alert('Error saving card');
+      if (err.message === 'DUPLICATE_CARD') {
+        alert('This card number already exists in your active cards.');
+      } else {
+        alert('Error saving card');
+      }
     }
   };
 
