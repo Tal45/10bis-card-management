@@ -9,6 +9,9 @@ interface BarcodeScannerProps {
 export default function BarcodeScanner({ onScanSuccess, onScanFailure }: BarcodeScannerProps) {
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const regionId = 'html5qr-code-full-region';
+  
+  // Validation state to prevent misreads and "rushing"
+  const scanHistory = useRef<{ text: string, count: number }>({ text: '', count: 0 });
 
   useEffect(() => {
     // Initialize the scanner with specific formats to reduce engine workload
@@ -28,7 +31,7 @@ export default function BarcodeScanner({ onScanSuccess, onScanFailure }: Barcode
         await scannerRef.current?.start(
           { facingMode: 'environment' },
           {
-            fps: 30, // Higher FPS for screen scanning
+            fps: 30, // Keep 30 FPS for responsiveness (prevents hanging)
             qrbox: { width: 300, height: 120 }, // Wider and shorter for Code 128
             aspectRatio: 1.777778,
             videoConstraints: {
@@ -38,7 +41,20 @@ export default function BarcodeScanner({ onScanSuccess, onScanFailure }: Barcode
             },
           },
           (decodedText) => {
-            onScanSuccess(decodedText);
+            // Validation logic: Require 2 identical consecutive reads
+            // Reduced from 3 to 2 to compensate for higher FPS and maintain speed
+            if (decodedText === scanHistory.current.text) {
+              scanHistory.current.count++;
+            } else {
+              scanHistory.current.text = decodedText;
+              scanHistory.current.count = 1;
+            }
+
+            if (scanHistory.current.count >= 2) {
+              onScanSuccess(decodedText);
+              // Reset history after success
+              scanHistory.current = { text: '', count: 0 };
+            }
           },
           (errorMessage) => {
             if (onScanFailure) onScanFailure(errorMessage);
