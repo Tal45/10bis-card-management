@@ -18,6 +18,7 @@ export const STORES: Store[] = [
   { id: 'machsanei-hashuk', name: 'מחסני השוק', category: 'Supermarket', logo: 'מחסני השוק.jpg', color: '#ed1c24' },
   { id: 'hahishuk', name: 'החישוק', category: 'Supermarket', logo: 'החישוק.png', color: '#000000' },
   { id: 'shefa-birkat-hashem', name: 'שפע ברכת השם', category: 'Supermarket', logo: 'שפע ברכת השם.png', color: '#000000' },
+  { id: 'good-pharm', name: 'גוד פארם', category: 'Supermarket', logo: 'good-pharm.jpg', color: '#e6007e' },
   { id: 'other', name: 'Other', category: 'Other', logo: '', color: '#525252' }
 ];
 
